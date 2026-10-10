@@ -10,7 +10,7 @@ const MODEL = process.env.GEMINI_MODEL ?? "gemini-3.8-flash";
 const functionDeclarations = tools.map((t) => ({
   name: t.name,
   description: t.description,
-  parametersJsonSchema: t.input_schema,
+  parameters: t.input_schema, // Altere apenas esta linha
 }));
 
 async function buildSystem(): Promise<string> {
