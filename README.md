@@ -1,6 +1,6 @@
 # Banoffe Bot 🍌🥧
 
-Assistente inteligente no Telegram com IA (Google Gemini) para gestão de vendas caseiras de **banoffe no pote**, controlando pedidos, pagamentos, entregas, gastos e relatórios financeiros em linguagem natural.
+Assistente inteligente no Telegram com interpretador baseado em regras (100% gratuito, sem cotas e sem IA) para gestão de vendas caseiras de **banoffe no pote**, controlando pedidos, pagamentos, entregas, gastos e relatórios financeiros em linguagem natural.
 
 ---
 
@@ -9,7 +9,7 @@ Assistente inteligente no Telegram com IA (Google Gemini) para gestão de vendas
 - **Framework:** Next.js (App Router) + TypeScript
 - **Hospedagem:** Vercel (Serverless Functions)
 - **Banco de Dados:** Supabase (PostgreSQL) com Service Role Key e RLS
-- **IA:** Google Gemini (`gemini-3.8-flash` ou outro modelo gratuito do Google AI Studio) via `@google/genai`
+- **Processamento de Linguagem:** Motor determinístico por regras e expressões regulares (latência zero, sem cotas)
 - **Mensageria:** Telegram Bot API (Webhook)
 
 ---
@@ -27,8 +27,8 @@ src/
     supabase.ts             # Cliente Supabase com Service Role
     telegram.ts             # Funções de envio de mensagem e typing
     dates.ts                # Utilitários de fuso horário (America/Campo_Grande)
-    tools.ts                # Definição e execução de ferramentas (Function Calling)
-    agent.ts                # Integração com Gemini, histórico e loop de agente
+    tools.ts                # Definição e execução de ações do banco
+    agent.ts                # Interpretador por regras e roteador de intenções
 supabase/
   schema.sql                # Tabelas, índices e RLS
 .env.example                # Modelo de variáveis de ambiente
@@ -43,8 +43,6 @@ README.md                   # Documentação completa
 Crie um arquivo `.env.local` na raiz (e configure na Vercel):
 
 ```env
-GEMINI_API_KEY=sua_chave_do_google_ai_studio
-GEMINI_MODEL=gemini-3.8-flash
 SUPABASE_URL=https://seu-projeto.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=sua_service_role_key
 TELEGRAM_BOT_TOKEN=token_do_botfather
@@ -71,19 +69,13 @@ ALLOWED_TELEGRAM_IDS=11111111,22222222
 4. Em **Project Settings > API**, copie a **Project URL** (`SUPABASE_URL`) e a chave `service_role` secreta (`SUPABASE_SERVICE_ROLE_KEY`).
 5. (Opcional) Ajuste o preço padrão do pote na tabela `config` caso não seja R$ 12,00.
 
-### 3. Google Gemini (Google AI Studio - Plano Gratuito)
-1. Acesse [aistudio.google.com/apikey](https://aistudio.google.com/apikey) com sua conta Google.
-2. Clique em **Create API key** e copie o valor para `GEMINI_API_KEY`.
-3. Certifique-se de que o billing não está ativado e que você está usando o plano gratuito.
-4. Mantenha `GEMINI_MODEL=gemini-3.8-flash` ou altere para outro modelo gratuito disponível.
-
-### 4. Deploy na Vercel
+### 3. Deploy na Vercel
 1. Envie o projeto para seu repositório no GitHub/GitLab.
 2. Importe o repositório na [Vercel](https://vercel.com).
-3. Em **Settings > Environment Variables**, adicione todas as 7 variáveis listadas acima.
+3. Em **Settings > Environment Variables**, cadastre as 5 variáveis listadas acima.
 4. Clique em **Deploy**.
 
-### 5. Registrar o Webhook do Telegram
+### 4. Registrar o Webhook do Telegram
 Após a conclusão do deploy na Vercel, execute o seguinte comando no seu terminal (substituindo `<TOKEN>`, `<SEU-DOMINIO>` e `<SECRET>`):
 
 ```bash

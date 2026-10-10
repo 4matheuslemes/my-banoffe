@@ -45,6 +45,14 @@ Este documento registra as decisões tomadas durante a implementação do **Bano
 ---
 
 ### 7. Resiliência no Build do Next.js
-- **Fallbacks em tempo de build:** `src/lib/supabase.ts` e `src/lib/agent.ts` utilizam fallbacks seguros de inicialização para permitir que `npm run build` execute sem falhar mesmo antes de as variáveis de ambiente estarem configuradas localmente ou durante fases de compilação estática do Next.js.
+- **Fallbacks em tempo de build:** `src/lib/supabase.ts` conta com fallbacks seguros de inicialização para permitir que `npm run build` execute sem falhar mesmo antes de as variáveis de ambiente estarem configuradas localmente ou durante fases de compilação estática do Next.js.
 - **Rota Dinâmica:** `src/app/api/telegram/route.ts` declara `export const dynamic = "force-dynamic"`, garantindo execução serverless em tempo real sem pré-renderização estática.
+
+---
+
+### 8. Migração para Bot Sem IA (Motor Determinístico por Regras/Regex)
+- **Motivação:** Fim de cotas (429) e instabilidade de latência/serviço (503) em APIs de IA gratuitas.
+- **Arquitetura:** `src/lib/agent.ts` agora utiliza um interpretador baseado em expressões regulares e regras semânticas determinísticas em português, com latência zero e custo 100% gratuito.
+- **Desambiguação Aprimorada:** Em `src/lib/tools.ts`, `acharPedidos` prioriza correspondência exata de nomes de clientes (ex.: "Ana" não coincide com "Mariana").
+- **Remoção de Pacotes:** `@google/genai` foi completamente desinstalado e as variáveis `GEMINI_API_KEY` e `GEMINI_MODEL` foram removidas.
 

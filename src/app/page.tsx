@@ -85,7 +85,7 @@ export default function Home() {
           <div style={{ marginTop: "10px" }}>
             <span className="tech-tag">Next.js 15 (App Router)</span>
             <span className="tech-tag">Supabase (PostgreSQL + RLS)</span>
-            <span className="tech-tag">Google Gemini (Free AI Studio)</span>
+            <span className="tech-tag">Motor Determinístico (Sem cotas)</span>
             <span className="tech-tag">Telegram Bot API</span>
             <span className="tech-tag">Vercel Serverless</span>
           </div>

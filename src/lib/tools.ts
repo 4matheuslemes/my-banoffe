@@ -152,13 +152,22 @@ async function acharPedidos(
   else if (input.cliente) q = q.ilike("cliente", `%${input.cliente}%`);
   else return { erro: "Informe cliente ou pedido_id." };
 
-  const { data, error } = await q;
+  const { data: found, error } = await q;
   if (error) return { erro: error.message };
-  if (!data?.length) return { erro: "Nenhum pedido em aberto encontrado." };
+  if (!found?.length) return { erro: "Nenhum pedido em aberto encontrado." };
 
-  const nomes = new Set(data.map((p) => p.cliente.toLowerCase()));
-  if (!input.pedido_id && !input.todos && (nomes.size > 1 || data.length > 1)) {
-    return { ambiguo: true, opcoes: data };
+  // Prefere nome exato (evita "Ana" pegar "Mariana")
+  let data = found;
+  if (input.cliente && !input.pedido_id) {
+    const alvo = input.cliente.trim().toLowerCase();
+    const exatos = found.filter((p) => p.cliente.trim().toLowerCase() === alvo);
+    if (exatos.length) data = exatos;
+  }
+
+  const nomes = new Set(data.map((p) => p.cliente.trim().toLowerCase()));
+  if (!input.pedido_id) {
+    if (nomes.size > 1) return { ambiguo: true, opcoes: data };
+    if (data.length > 1 && !input.todos) return { ambiguo: true, opcoes: data };
   }
   return { pedidos: data };
 }
