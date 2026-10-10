@@ -5,7 +5,7 @@ Este documento registra as decisões tomadas durante a implementação do **Bano
 ---
 
 ### 1. Modelo de IA e Provedor
-- **Modelo Padrão:** `gemini-2.5-flash` (configurável via variável `GEMINI_MODEL`).
+- **Modelo Padrão:** `gemini-3.8-flash` (configurável via variável `GEMINI_MODEL`).
 - **SDK:** `@google/genai` (SDK oficial unificado do Google AI Studio).
 - **Function Calling:** As ferramentas foram mapeadas diretamente para `functionDeclarations` utilizando `parametersJsonSchema: t.input_schema`. Assegurou-se tipagem segura e compatibilidade com o formato esperado pelo Gemini.
 - **Tratamento de Limite de Taxa (Rate Limit / 429):** O webhook captura exceções e retorna uma mensagem amigável ("Deu um erro aqui. Tenta de novo em instantes.") sem entrar em loops de retentativa que poderiam agravar o bloqueio ou consumir cotas.

@@ -4,7 +4,7 @@ import { tools, runTool, getPreco } from "./tools";
 import { todayStr } from "./dates";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "placeholder-key" });
-const MODEL = process.env.GEMINI_MODEL ?? "gemini-2.5-flash";
+const MODEL = process.env.GEMINI_MODEL ?? "gemini-3.8-flash";
 
 // Converte as ferramentas (JSON Schema) para o formato do Gemini.
 const functionDeclarations = tools.map((t) => ({

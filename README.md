@@ -9,7 +9,7 @@ Assistente inteligente no Telegram com IA (Google Gemini) para gestão de vendas
 - **Framework:** Next.js (App Router) + TypeScript
 - **Hospedagem:** Vercel (Serverless Functions)
 - **Banco de Dados:** Supabase (PostgreSQL) com Service Role Key e RLS
-- **IA:** Google Gemini (`gemini-2.5-flash` ou outro modelo gratuito do Google AI Studio) via `@google/genai`
+- **IA:** Google Gemini (`gemini-3.8-flash` ou outro modelo gratuito do Google AI Studio) via `@google/genai`
 - **Mensageria:** Telegram Bot API (Webhook)
 
 ---
@@ -44,7 +44,7 @@ Crie um arquivo `.env.local` na raiz (e configure na Vercel):
 
 ```env
 GEMINI_API_KEY=sua_chave_do_google_ai_studio
-GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MODEL=gemini-3.8-flash
 SUPABASE_URL=https://seu-projeto.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=sua_service_role_key
 TELEGRAM_BOT_TOKEN=token_do_botfather
@@ -75,7 +75,7 @@ ALLOWED_TELEGRAM_IDS=11111111,22222222
 1. Acesse [aistudio.google.com/apikey](https://aistudio.google.com/apikey) com sua conta Google.
 2. Clique em **Create API key** e copie o valor para `GEMINI_API_KEY`.
 3. Certifique-se de que o billing não está ativado e que você está usando o plano gratuito.
-4. Mantenha `GEMINI_MODEL=gemini-2.5-flash` ou altere para outro modelo gratuito disponível.
+4. Mantenha `GEMINI_MODEL=gemini-3.8-flash` ou altere para outro modelo gratuito disponível.
 
 ### 4. Deploy na Vercel
 1. Envie o projeto para seu repositório no GitHub/GitLab.
