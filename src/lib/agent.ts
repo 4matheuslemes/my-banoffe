@@ -136,9 +136,8 @@ function modoDe(s?: string): Modo {
 
 function linhaPedido(p: any): string {
   const entrega = p.data_entrega && !p.entregue ? ` (${dm(p.data_entrega)})` : "";
-  return `• ${p.cliente}: ${potes(p.quantidade)}, ${brl(p.valor_total)}, ${
-    p.pago ? "pago" : "não pago"
-  }, ${p.entregue ? "entregue" : "a entregar"}${entrega}`;
+  return `• ${p.cliente}: ${potes(p.quantidade)}, ${brl(p.valor_total)}, ${p.pago ? "pago" : "não pago"
+    }, ${p.entregue ? "entregue" : "a entregar"}${entrega}`;
 }
 
 // Evita que "Ana" pegue também "Mariana": prefere nome exato quando existe
@@ -169,9 +168,8 @@ async function novoPedido(nomeRaw: string, qtd: number, resto: string): Promise<
   });
   if (r.erro) return `⚠️ ${r.erro}`;
   const p = r.pedido;
-  return `✅ ${p.cliente}: ${potes(p.quantidade)}, ${brl(p.valor_total)}, ${
-    p.pago ? "pago" : "não pago"
-  }${p.data_entrega ? `, entrega ${dm(p.data_entrega)}` : ""}.`;
+  return `✅ ${p.cliente}: ${potes(p.quantidade)}, ${brl(p.valor_total)}, ${p.pago ? "pago" : "não pago"
+    }${p.data_entrega ? `, entrega ${dm(p.data_entrega)}` : ""}.`;
 }
 
 async function marcar(
@@ -239,7 +237,7 @@ async function resumo(periodo: Periodo): Promise<string> {
   if (r.erro) return `⚠️ ${r.erro}`;
   return [
     `📊 Resumo ${NOME_PERIODO[periodo]}`,
-    `Potes: ${r.potes} (${r.pedidos} pedidos)`,
+    `Banoffes vendidos: ${r.potes} em ${r.pedidos} pedidos`,
     `Vendido: ${brl(r.vendido)}`,
     `Recebido: ${brl(r.recebido)}`,
     `A receber: ${brl(r.a_receber)}`,
