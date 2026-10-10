@@ -6,11 +6,27 @@ import { todayStr } from "./dates";
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "placeholder-key" });
 const MODEL = process.env.GEMINI_MODEL ?? "gemini-3.8-flash";
 
-// Converte as ferramentas (JSON Schema) para o formato do Gemini.
+// Função para converter os tipos (JSON Schema) para o formato do Gemini (maiúsculas)
+function fixSchema(schema: any): any {
+  if (!schema || typeof schema !== "object") return schema;
+  if (Array.isArray(schema)) return schema.map(fixSchema);
+
+  const novo: any = {};
+  for (const key in schema) {
+    if (key === "type" && typeof schema[key] === "string") {
+      novo[key] = schema[key].toUpperCase();
+    } else {
+      novo[key] = fixSchema(schema[key]);
+    }
+  }
+  return novo;
+}
+
+// Converte as ferramentas para o formato exigido pelo Gemini
 const functionDeclarations = tools.map((t) => ({
   name: t.name,
   description: t.description,
-  parameters: t.input_schema, // Altere apenas esta linha
+  parameters: fixSchema(t.input_schema),
 }));
 
 async function buildSystem(): Promise<string> {
