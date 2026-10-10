@@ -235,12 +235,27 @@ async function listar(
 async function resumo(periodo: Periodo): Promise<string> {
   const r: any = await runTool("resumo", { periodo });
   if (r.erro) return `⚠️ ${r.erro}`;
+
+  // Quem ainda não pagou (no mesmo período do resumo)
+  const np: any = await runTool("listar_pedidos", { filtro: "nao_pagos", periodo });
+  const devedores = new Map<string, { nome: string; total: number }>();
+  for (const p of np.pedidos ?? []) {
+    const chave = String(p.cliente).trim().toLowerCase();
+    const atual = devedores.get(chave) ?? { nome: p.cliente, total: 0 };
+    atual.total += Number(p.valor_total);
+    devedores.set(chave, atual);
+  }
+  const linhasDevedores = Array.from(devedores.values())
+    .sort((a, b) => b.total - a.total)
+    .map((d) => `   • ${d.nome}: ${brl(d.total)}`);
+
   return [
     `📊 Resumo ${NOME_PERIODO[periodo]}`,
     `Banoffes vendidos: ${r.potes} em ${r.pedidos} pedidos`,
     `Vendido: ${brl(r.vendido)}`,
     `Recebido: ${brl(r.recebido)}`,
     `A receber: ${brl(r.a_receber)}`,
+    ...linhasDevedores,
     `Gastos: ${brl(r.gastos)}`,
     `Lucro estimado: ${brl(r.lucro_estimado)} (vendido − gastos)`,
     `Lucro em caixa: ${brl(r.lucro_em_caixa)} (recebido − gastos)`,
